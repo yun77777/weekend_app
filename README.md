@@ -1,1 +1,1 @@
-# weekend_app
+# Weekend application project
