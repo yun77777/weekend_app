@@ -71,6 +71,12 @@ const onhandlePost = async (data) => {
      },
      body: JSON.stringify(postData),
    })
+   .then(res => res.json())
+   .then(res => {
+     if(res.success){
+      res.redirect('/');
+     }
+   })
    .catch(error => {
      window.alert(error);
      return;
@@ -81,6 +87,17 @@ const onhandlePost = async (data) => {
     .then(function (response) {
       console.log(response, 'joined successfully');
       // history.push('/login');
+      // response.redirect("/login");
+      // var redir = { redirect: "/" };
+      // return res.json(redir);
+
+
+      // response.data.redirect = '/login';
+      window.location = "/login";
+
+      
+      // return response.json({ redirect: "/" });
+
     })
     .catch(function (err) {
       console.log(err);
@@ -257,7 +274,7 @@ const handleSubmit = (e) => {
 
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
