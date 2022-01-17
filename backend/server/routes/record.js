@@ -74,7 +74,7 @@ recordRoutes.post('/user/login', (req, res) => {
           }
           if (isMatch) {
             // this token stays for a week
-            const token = jwt.sign({ userID: user._id }, SECRET_TOKEN, {expiresIn: 'a week'});
+            const token = jwt.sign({ userID: user.email }, SECRET_TOKEN, {expiresIn: 'a week'});
 
             // assign the token to the user and save it
             user.token = token;
@@ -90,7 +90,7 @@ recordRoutes.post('/user/login', (req, res) => {
                   httpOnly: true,
                 })
                 .status(200)
-                .json({ loginSuccess: true, userId: user._id });
+                .json({ loginSuccess: true, userId: user.email });
             });
           } else {
             return res.status(403).json({
