@@ -17,8 +17,9 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
  
 // We import all the components we need in our app
-import Login from "./login";
 import SignUp from "./register";
+import Login from "./login";
+import Sample from "./sample";
 
 const App = () => {
  return (
@@ -26,6 +27,7 @@ const App = () => {
      <Routes>
        <Route exact path="/" element={<SignUp />} />
        <Route path="/login" element={<Login />} />
+       <Route path="/sample" element={<Sample />} />
      </Routes>
    </div>
  );

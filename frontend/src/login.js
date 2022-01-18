@@ -52,6 +52,8 @@ const onhandlePost = async (data) => {
     .then(function (response) {
       console.log(response, 'logged in successfully');
       // history.push('/login');
+      window.location = "/sample";
+
     })
     .catch(function (err) {
       console.log(err);

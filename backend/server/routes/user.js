@@ -19,6 +19,8 @@ UserSchema.pre('save', function(next) {
     bcrypt.hash(user.password, salt, (err, hash) => {
       if (err) return next(err);
       user.password = hash;
+      console.log("hash@:", hash);
+
       next();
     });
   });
