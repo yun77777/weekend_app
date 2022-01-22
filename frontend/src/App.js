@@ -1,36 +1,38 @@
-// import Register from './register';
+import React, {useEffect, useState} from "react";
 
-// function App() {
-//   return (
-//     <div >
-//       <Register/>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-import React from "react";
- 
 // We use Route in order to define the different routes of our application
 import { Route, Routes } from "react-router-dom";
- 
+
+
+import './App.css';
+
+
 // We import all the components we need in our app
 import SignUp from "./register";
 import Login from "./login";
+import Main from "./main";
 import Sample from "./sample";
 
+
+// import Main from "./container/Main";
+import Home from "./container/Home";
+
+
 const App = () => {
- return (
-   <div>
-     <Routes>
-       <Route exact path="/" element={<SignUp />} />
-       <Route path="/login" element={<Login />} />
-       <Route path="/sample" element={<Sample />} />
-     </Routes>
-   </div>
- );
+  return (
+    <div>
+      <Routes>
+        <Route exact path="/" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sample" element={<Sample />} />
+        <Route path="/main" element={<Main />} />
+        
+        {/* <Route path="/main" component={Main} /> */}
+        <Route path="/home/:id" component={Home} />
+      </Routes>
+      
+    </div>
+  );
 };
- 
+
 export default App;

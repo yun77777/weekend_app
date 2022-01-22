@@ -21,6 +21,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import styled from 'styled-components';
 
+import Chat from './Chat';
+import Sidebar from './Sidebar';
+
 const theme = createTheme();
 
 const FormHelperTexts = styled(FormHelperText)`
@@ -97,31 +100,11 @@ const handleSubmit = (e) => {
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Logged in successfully
-          </Typography>
-
-              <Grid item>
-                <Link href="/" variant="body2">
-                  You don't have an account? Sign up
-                </Link>
-              </Grid>
-        </Box>
-      </Container>
-    </ThemeProvider>
+    <div className="App">
+        <div className="app__body">
+          <Sidebar />
+          <Chat />
+        </div>
+      </div>
   );
 }
