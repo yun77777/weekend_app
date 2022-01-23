@@ -52,7 +52,7 @@ const onhandlePost = async (data) => {
     .then(function (response) {
       console.log(response, 'logged in successfully');
       // history.push('/login');
-      window.location = "/sample";
+      window.location = "/mypage";
 
     })
     .catch(function (err) {

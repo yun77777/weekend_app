@@ -25,5 +25,19 @@ UserSchema.pre('save', function(next) {
     });
   });
 });
- 
+
+UserSchema.methods.checkPassword = function(guess){
+  console.log('p1:',guess);
+  console.log('p2:',this.password);
+  console.log('bcrypt.compare(guess,this.password):', bcrypt.compare(guess,this.password));
+  return bcrypt.compare(guess,this.password);
+};
+
+// UserSchema.methods.checkPassword = function(guess, done){
+//   bcrypt.compare(guess,this.password, function(err, isMatch) {
+//     done(err, isMatch);
+//   });
+// };
+
+
 module.exports = mongoose.model('User', UserSchema);

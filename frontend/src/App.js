@@ -9,8 +9,8 @@ import './App.css';
 
 // We import all the components we need in our app
 import SignUp from "./register";
-import Login from "./login";
-import Main from "./main";
+import Login from "./login"; 
+import MyPage from "./mypage";
 import Sample from "./sample";
 
 
@@ -25,7 +25,7 @@ const App = () => {
         <Route exact path="/" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sample" element={<Sample />} />
-        <Route path="/main" element={<Main />} />
+        <Route path="/mypage" element={<MyPage />} />
         
         {/* <Route path="/main" component={Main} /> */}
         <Route path="/home/:id" component={Home} />
