@@ -30,6 +30,11 @@ const FormHelperTexts = styled(FormHelperText)`
   color: #d32f2f;
 `;
 
+// const instance = axios.create({
+//   baseURL: 'http://localhost:5000/user/login',
+//   timeeout: 1000,
+//   headers: {'Autorization': 'Bearer ' +token}
+// });
 
 export default function Login() {
 
@@ -51,8 +56,10 @@ const onhandlePost = async (data) => {
     .post('http://localhost:5000/user/login', postData)
     .then(function (response) {
       console.log(response, 'logged in successfully');
+      console.log(response.data.accessToken, ' accessToken');
+      
       // history.push('/login');
-      window.location = "/mypage";
+      // window.location = "/mypage";
 
     })
     .catch(function (err) {

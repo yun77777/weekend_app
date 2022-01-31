@@ -5,6 +5,13 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, unique: true, require: true, trim: true },
   name: { type: String, unique: false, require: true, trim: true },
   password: { type: String, require: true },
+  token: {type: String},
+  imagePath: {type: String},
+  imageName: {type: String},
+  token: {type: String},
+  accessToken: {type: String},
+  refreshToken: {type: String},
+
 });
  
 UserSchema.pre('save', function(next) {
@@ -12,6 +19,7 @@ UserSchema.pre('save', function(next) {
   const saltFactor = 10;
 
   console.log("user@:", user);
+  if(user.accessToken) return;
 
   bcrypt.genSalt(saltFactor, (err, salt) => {
     if (err) return next(err);
@@ -20,7 +28,7 @@ UserSchema.pre('save', function(next) {
       if (err) return next(err);
       user.password = hash;
       console.log("hash@:", hash);
-
+      console.log("user.password@:", user.password);
       next();
     });
   });
@@ -29,7 +37,6 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.checkPassword = function(guess){
   console.log('p1:',guess);
   console.log('p2:',this.password);
-  console.log('bcrypt.compare(guess,this.password):', bcrypt.compare(guess,this.password));
   return bcrypt.compare(guess,this.password);
 };
 
@@ -38,6 +45,8 @@ UserSchema.methods.checkPassword = function(guess){
 //     done(err, isMatch);
 //   });
 // };
+
+
 
 
 module.exports = mongoose.model('User', UserSchema);

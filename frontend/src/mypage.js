@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { useHistory } from 'react-router-dom';
 
@@ -40,7 +40,27 @@ const [nameError, setNameError] = useState('');
 const [agreementError, setagreementError] = useState('');
 const [checked, setChecked] = useState(false);
 const [registerError, setRegisterError] = useState('');
+
+
+const [myPageList, setMyPageList] = useState([]);
+
 // const history = useHistory();
+
+useEffect(() => {
+  console.log('api:',process.env.REACT_APP_REQUEST_URL);
+  
+  // const headers = {
+  //   Authorization: `Bearer ${accessToken}`
+  // };
+
+  axios.get(`http://localhost:5000/api/mypage`)
+  // axios.get(`${process.env.REACT_APP_REQUEST_URL}/api/mypage`)
+  .then((response) => {
+      setMyPageList(response.data.data);
+      console.log('response.data.data:',response.data.data);
+  })
+}, []);
+
 
 const handleAgree = (event) => {
     setChecked(event.target.checked);

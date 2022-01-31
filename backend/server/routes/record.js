@@ -29,65 +29,45 @@ recordRoutes.route("/user/join/").post(async function (req, res) {
 
 });
 
-recordRoutes.route("/user/login/original").post(async function (req, res) {
-  const { email, name, password } = req.body;
 
-  const user = await User.findOne({ email });
-  console.log('user: ', user);
-  console.log('password: ', password);
 
-  if (user) {
-    const bcrptCompare = await bcrypt.compare(password, user.password);
-    console.log('bcrptCompare: ', bcrptCompare);
-    if (bcrptCompare) {
+const generateAccessToken = (email) => {
+  return jwt.sign({email}, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "15m"
+  });
+};
 
-      const token = await jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
-
-      user.token = token;
-      console.log('token:', user.token);
-
-      try {
-        user.save(function (err, user) {
-          if (err) return res.json({ error: 'errrrrrror' })
-          res.cookie('x_auth', user.token, {
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-            httpOnly: true
-          }).json({ error: false, email: email });
-        });
-      } catch (err) {
-        return res.json({ error: true, msg: 'error happened' });
-      }
-
-      console.log('logged in successfully');
-
-    }
-  } else {
-    return res.json({ error: true, msg: 'check your account' });
-  }
-
-});
-
+const generateRefreshToken = (email) => {
+ return jwt.sign({email}, process.env.REFRESH_TOKEN_SECRET, {
+   expiresIn: "180 days"
+ });
+};
 
 recordRoutes.route("/user/login").post(async function (req, res) {
-  const { email, name, password } = req.body;
+  let { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  let user = await User.findOne({ email });
+  console.log('user@: ', user);
 
-  const isMatch = await user.checkPassword(password);
+  let isMatch = await user.checkPassword(password);
 
   console.log('isMatch: ', isMatch);
 
   if (isMatch) {
 
-    const token = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+    let accessToken = generateAccessToken(email);
+    // jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
+    let refreshToken = generateRefreshToken(email);
+    // jwt.sign({ email: user.email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '180 days' });
 
-    user.token = token;
-    console.log('token:', user.token);
+    user.accessToken = accessToken;
+    user.refreshToken = refreshToken;
+    console.log('accessToken:', user.accessToken);
 
     try {
       user.save(function (err, user) {
         if (err) return res.json({ error: 'errrrrrror' })
-        res.cookie('x_auth', user.token, {
+        res.cookie('x_auth', user.accessToken, {
           maxAge: 1000 * 60 * 60 * 24 * 7,
           httpOnly: true
         }).json({ error: false, email: email });
@@ -97,12 +77,76 @@ recordRoutes.route("/user/login").post(async function (req, res) {
     }
 
     console.log('logged in successfully');
+    return res.json({ accessToken, refreshToken});
 
   } else {
     return res.json({ error: true, msg: 'check your account' });
   }
+});
+
+
+
+recordRoutes.route("/api/token").get(async function (req, res) {
+  let { email, password } = req.body;
+
+  let user = await User.findOne({ email });
+
+  let accessToken = user.accessToken;
+
+  return res.json({ accessToken});
 
 });
 
+const authMiddleware = (req, res, next) => {
+  let authHeader = req.headers["authorization"];
+  let token = authHeader && authHeader.split(" ")[1];
+
+  if(!token) {
+    console.log('something went wrong on token');
+    return res.sendStatus(400);
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+    if(error) {
+      console.log(error);
+      return res.sendStatus(403);
+    }
+
+    req.user = user;
+    next();
+  });
+};
+
+// regenerate access token based on refresh token
+recordRoutes.route("/refresh").post(async function (req, res) {
+  let refreshToken = req.body.refreshToken;
+  if(!refreshToken) return res.sendStatus(401);
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (error, user) => {
+      if(error) return res.sendStatus(403);
+
+      const accessToken = generateAccessToken(user.email);
+
+      res.json({accessToken});
+    }
+  )
+});
+
+recordRoutes.route("/api/mypage").get(authMiddleware, (req, res) => {
+  console.log(req.user);
+  // const users = await db.users.find({token:token});
+
+  res.json(db.users.filter((user) => user.email === req.user.email));
+});
+
+// http://localhost:5000/api/mypage
+// recordRoutes.route("/api/mypage").get(function (req, res) {
+//   // console.log('req.cookies.x_auth:',req.cookies);
+//   // const users = await db.users.find({token:token});
+
+// });
 
 module.exports = recordRoutes;
