@@ -16,10 +16,11 @@ const UserSchema = new mongoose.Schema({
  
 UserSchema.pre('save', function(next) {
   const user = this;
-  const saltFactor = 10;
 
   console.log("user@:", user);
-  if(user.accessToken) return;
+  if(user.accessToken || user.token) return;
+
+  const saltFactor = 10;
 
   bcrypt.genSalt(saltFactor, (err, salt) => {
     if (err) return next(err);

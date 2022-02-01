@@ -64,19 +64,20 @@ recordRoutes.route("/user/login").post(async function (req, res) {
     user.refreshToken = refreshToken;
     console.log('accessToken:', user.accessToken);
 
-    try {
-      user.save(function (err, user) {
-        if (err) return res.json({ error: 'errrrrrror' })
-        res.cookie('x_auth', user.accessToken, {
-          maxAge: 1000 * 60 * 60 * 24 * 7,
-          httpOnly: true
-        }).json({ error: false, email: email });
-      });
-    } catch (err) {
-      return res.json({ error: true, msg: 'error happened' });
-    }
+    // try {
+    //     user.save(function (err, user) {
+    //     if (err) return res.json({ error: 'errrrrrror' })
+    //     res.cookie('x_auth', user.accessToken, {
+    //       maxAge: 1000 * 60 * 60 * 24 * 7,
+    //       httpOnly: true
+    //     }).json({ error: false, email: email });
 
-    console.log('logged in successfully');
+    //   });
+    // } catch (err) {
+    //   return res.json({ error: true, msg: 'error happened' });
+    // }
+
+    console.log('l@@@@@@ogged in successfully');
     return res.json({ accessToken, refreshToken});
 
   } else {

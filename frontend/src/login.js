@@ -53,12 +53,17 @@ const onhandlePost = async (data) => {
 
 
   await axios
-    .post('http://localhost:5000/user/login', postData)
+    .post('http://localhost:5000/user/login', postData
+    , {headers: {
+      "Content-Typye": `application/json`
+    }})
     .then(function (response) {
       console.log(response, 'logged in successfully');
-      console.log(response.data.accessToken, ' accessToken');
-      
-      // history.push('/login');
+      console.log(response.data, 'esponse.data');
+
+      axios.defaults.headers.common['Autorization'] = 'Bearer' + response.data;;
+      props.loginCallBack(true);
+                props.history.push("/");// history.push('/login');
       // window.location = "/mypage";
 
     })
