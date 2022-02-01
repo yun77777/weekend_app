@@ -4,6 +4,10 @@ const jwt = require('jsonwebtoken');
 const recordRoutes = express.Router();
 const router = express.Router();
 const User = require('./user');
+const cookieParser = require('cookie-parser');
+
+const authMiddleware = require('./authMiddleware');
+recordRoutes.use(cookieParser());
 
 recordRoutes.route("/user/join/").post(async function (req, res) {
   const { email, name, password } = req.body;
@@ -77,6 +81,11 @@ recordRoutes.route("/user/login").post(async function (req, res) {
     //   return res.json({ error: true, msg: 'error happened' });
     // }
 
+    res.cookie('accessToken', accessToken, { maxAge: 1000 * 60 * 10, httpOnly: false });
+    // res.cookie('accessToken', accessToken);
+    console.log(req.cookies.accessToken,' cookies');
+
+    
     console.log('l@@@@@@ogged in successfully');
     return res.json({ accessToken, refreshToken});
 
@@ -98,25 +107,25 @@ recordRoutes.route("/api/token").get(async function (req, res) {
 
 });
 
-const authMiddleware = (req, res, next) => {
-  let authHeader = req.headers["authorization"];
-  let token = authHeader && authHeader.split(" ")[1];
+// const authMiddleware = (req, res, next) => {
+//   let authHeader = req.headers["authorization"];
+//   let token = authHeader && authHeader.split(" ")[1];
 
-  if(!token) {
-    console.log('something went wrong on token');
-    return res.sendStatus(400);
-  }
+//   if(!token) {
+//     console.log('something went wrong on token');
+//     return res.sendStatus(400);
+//   }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
-    if(error) {
-      console.log(error);
-      return res.sendStatus(403);
-    }
+//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+//     if(error) {
+//       console.log(error);
+//       return res.sendStatus(403);
+//     }
 
-    req.user = user;
-    next();
-  });
-};
+//     req.user = user;
+//     next();
+//   });
+// };
 
 // regenerate access token based on refresh token
 recordRoutes.route("/refresh").post(async function (req, res) {
@@ -136,9 +145,10 @@ recordRoutes.route("/refresh").post(async function (req, res) {
   )
 });
 
-recordRoutes.route("/api/mypage").get(authMiddleware, (req, res) => {
-  console.log(req.user);
+// recordRoutes.use("/api/mypage", authMiddleware);
+recordRoutes.route("/api/mypage").get(authMiddleware, (req, res, next) => {
   // const users = await db.users.find({token:token});
+  
 
   res.json(db.users.filter((user) => user.email === req.user.email));
 });

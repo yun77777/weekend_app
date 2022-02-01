@@ -61,9 +61,9 @@ const onhandlePost = async (data) => {
       console.log(response, 'logged in successfully');
       console.log(response.data, 'esponse.data');
 
-      axios.defaults.headers.common['Autorization'] = 'Bearer' + response.data;;
-      props.loginCallBack(true);
-                props.history.push("/");// history.push('/login');
+      axios.defaults.headers.common['Autorization'] = 'Bearer' + response.data;
+      // props.loginCallBack(true);
+      //           props.history.push("/");// history.push('/login');
       // window.location = "/mypage";
 
     })

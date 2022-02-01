@@ -48,11 +48,14 @@ const [myPageList, setMyPageList] = useState([]);
 
 useEffect(() => {
   console.log('api:',process.env.REACT_APP_REQUEST_URL);
-  
+  console.log('header:',axios.defaults.headers.common);
   // const headers = {
   //   Authorization: `Bearer ${accessToken}`
   // };
-
+  
+  // # header
+  // key: Access-Token
+  // value: 
   axios.get(`http://localhost:5000/api/mypage`)
   // axios.get(`${process.env.REACT_APP_REQUEST_URL}/api/mypage`)
   .then((response) => {
