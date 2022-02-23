@@ -1,9 +1,25 @@
 var app = new Framework7({
   routes: [
     {
-      name: 'about',
-      path: '/about/',
-      url: './about.html',
+      name: 'signup',
+      path: '/signup/',
+      url: './signup.html',
+    },
+    {
+      name: 'index',
+      path: '/',
+      url: './index.html',
+      options: {
+        animate: false,
+      },
+      on: {
+        pageAfterIn: function test (e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function (e, page) {
+          initLogin();
+        },
+      }
     },
     {
       name: 'index',
@@ -12,6 +28,14 @@ var app = new Framework7({
       options: {
         animate: false,
       },
+      on: {
+        pageAfterIn: function test (e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function (e, page) {
+          initLogin();
+        },
+      }
     },
     {
       name: 'login',
@@ -20,6 +44,14 @@ var app = new Framework7({
       options: {
         animate: false,
       },
+      on: {
+        pageAfterIn: function test (e, page) {
+          // do something after page gets into the view
+        },
+        pageInit: function (e, page) {
+          initLogin();
+        },
+      }
     },
     {
       name: 'users',
@@ -47,4 +79,23 @@ var app = new Framework7({
   ],
 });
 
+
 var mainView = app.views.create('.view-main');
+
+
+var $$ = Dom7;
+
+$$('.convert-form-to-data').on('click', function(){
+  var formData = app.form.convertToData('#my-form');
+  alert(JSON.stringify(formData));
+});
+
+$$('.fill-form-from-data').on('click', function(){
+  var formData = {
+    'name': 'John',
+    'email': 'john@doe.com',
+    'gender': 'female',
+    'toggle': ['yes'],
+  }
+  app.form.fillFromData('#my-form', formData);
+});

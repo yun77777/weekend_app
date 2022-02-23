@@ -1,57 +1,67 @@
-<!-- We don't need full layout in this file because this page will be parsed with Ajax. It is just enough to put here .navbar and .page-->
 
-<!-- Top Navbar-->
-<div class="navbar">
-    <div class="navbar-inner">
-        <div class="left">
-            <a href="#" class="back link">
-                <i class="icon icon-back"></i>
-                <span>Back</span>
-            </a>
-        </div>
-        <div class="center sliding">About</div>
-        <div class="right">
-            <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-        </div>
-    </div>
-</div>
-<div class="pages">
-    <div data-page="login" class="page">
-        <div class="page-content">
-            <div class="content-block">
-
-
-                <form>
-                    <div class="list">
-                        <ul>
-                            <li class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Username</div>
-                                    <div class="item-input-wrap">
-                                        <input type="text" name="username" placeholder="Your username">
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="item-content item-input">
-                                <div class="item-inner">
-                                    <div class="item-title item-label">Password</div>
-                                    <div class="item-input-wrap">
-                                        <input type="password" name="password" placeholder="Your password">
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="list">
-                        <ul>
-                            <li><a class="list-button" href="#">Sign In</a></li>
-                        </ul>
-                        <div class="block-footer">
+    <div class="views">
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+          <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+          <div class="pages navbar-fixed toolbar-fixed">
+            <!-- Page, "data-page" contains page name -->
+            <div data-page="login" class="page">
+   
+              <!-- Top Navbar. In Material theme it should be inside of the page-->
+              <div class="navbar">
+                <div class="navbar-inner">
+                  <div class="center">Awesome App</div>
+                </div>
+              </div>
+   
+              <!-- Toolbar. In Material theme it should be inside of the page-->
+              <div class="toolbar">
+                <div class="toolbar-inner">
+                  <!-- Toolbar links -->
+                  <a href="#" class="link">Link 1</a>
+                  <a href="#" class="link">Link 2</a>
+                </div>
+              </div>
+   
+              <!-- Scrollable page content -->
+              <div class="page-content">
+                <form class="list" id="my-form">
+                  <ul>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">ID</div>
+                          <div class="item-input-wrap">
+                            <input type="text" name="id" placeholder="Your name">
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Password</div>
+                          <div class="item-input-wrap">
+                            <input type="password" name="password" placeholder="E-mail">
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </form>
-
+                <div class="block block-strong row">
+                  <div class="col"><a class="button convert-form-to-data" href="#">Get Data</a></div>
+                  <div class="col"><a class="button fill-form-from-data signUpBtn" href="/signup/">Sign up</a></div>
+                </div>
+                <!-- <div class="block block-strong row">
+                  <div class="col"><a class="button convert-form-to-data" href="#">Get Data</a></div>
+                  <div class="col"><a class="button fill-form-from-data" href="#">Fill Form</a></div>
+                </div> -->
+                <!-- <a href="/about/">About app</a><br>
+                <a href="/login/">Login</a> -->
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+      
