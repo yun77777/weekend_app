@@ -15,9 +15,13 @@ router.post('/post', function (req, res, next) {
 
 router.post('/post/test', function (req, res, next) {
     console.log('POST test 호출 / data : ' + req.body.data);
+    console.log('POST test 호출 / data : ' + req.body.data.user);
     console.log('POST test 호출 / data : ' + JSON.stringify(req.body.data));
+    console.log('POST test 호출 / data : ' + JSON.parse(req.body.data));
+    console.log('POST test 호출 / data : ' + JSON.stringify(req.body.data.user));
+    console.log('POST test 호출 / data : ' + JSON.parse(req.body.data.user));
     console.log('path : ' + req.path);
-    res.send('post success')
+    res.send('post test success')
 });
 
 
