@@ -10,9 +10,17 @@ const authMiddleware = require('./authMiddleware');
 recordRoutes.use(cookieParser());
 
 recordRoutes.route("/user/join/").post(async function (req, res) {
-  const { email, name, password } = req.body;
+  // const { email, name, password } = req.body;
+  console.log('req.body@@@:', req.body.user);
+
+  const email = req.body.user.email;
+  const name = req.body.user.name;
+  const password = req.body.user.password;
+
   const user = await User.findOne({ email });
-  console.log('user:', user);
+  console.log('email@@@:', email);
+  console.log('name@@@:', name);
+  console.log('password@@@:', password);
 
   if (!user) {
     try {
@@ -48,7 +56,12 @@ const generateRefreshToken = (email) => {
 };
 
 recordRoutes.route("/user/login").post(async function (req, res) {
-  let { email, password } = req.body;
+  // let { email, password } = req.body;
+  const email = req.body.user.email;
+  const password = req.body.user.password;
+  
+  console.log('email@: ', email);
+  console.log('password@: ', password);
 
   let user = await User.findOne({ email });
   console.log('user@: ', user);

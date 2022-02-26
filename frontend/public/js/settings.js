@@ -1,14 +1,14 @@
 var app = new Framework7({
   routes: [
     {
-      name: 'signup',
-      path: '/signup/',
-      url: './signup.html',
+      name: 'about',
+      path: '/about/',
+      url: '../templates/about.html',
     },
     {
-      name: 'index',
-      path: '/',
-      url: './index.html',
+      name: 'login',
+      path: '/login/',
+      url: '../templates/login.html',
       options: {
         animate: false,
       },
@@ -24,7 +24,7 @@ var app = new Framework7({
     {
       name: 'index',
       path: '/index/',
-      url: './index.html',
+      url: '../templates/index.html',
       options: {
         animate: false,
       },
@@ -80,22 +80,43 @@ var app = new Framework7({
 });
 
 
-var mainView = app.views.create('.view-main');
 
 
-var $$ = Dom7;
+// var $$ = Dom7;
 
-$$('.convert-form-to-data').on('click', function(){
-  var formData = app.form.convertToData('#my-form');
-  alert(JSON.stringify(formData));
-});
+// $$('.convert-form-to-data').on('click', function(){
+//   var formData = app.form.convertToData('#my-form');
+//   alert(JSON.stringify(formData));
+// });
 
-$$('.fill-form-from-data').on('click', function(){
-  var formData = {
-    'name': 'John',
-    'email': 'john@doe.com',
-    'gender': 'female',
-    'toggle': ['yes'],
-  }
-  app.form.fillFromData('#my-form', formData);
-});
+// $$('.fill-form-from-data').on('click', function(){
+//   var formData = {
+//     'name': 'John',
+//     'email': 'john@doe.com',
+//     'gender': 'female',
+//     'toggle': ['yes'],
+//   }
+//   app.form.fillFromData('#my-form', formData);
+// });
+
+
+
+// var myApp = new Framework7({
+//   // Default title for modals
+//   modalTitle: 'My App',
+
+//   // If it is webapp, we can enable hash navigation:
+//   pushState: true,
+
+//   // Hide and show indicator during ajax requests
+//   onAjaxStart: function (xhr) {
+//       myApp.showIndicator();
+//   },
+//   onAjaxComplete: function (xhr) {
+//       myApp.hideIndicator();
+//   }
+// });
+
+var mainView = app.addView('.view-main')
+
+// mainView.router.loadPage('../templates/login.html');

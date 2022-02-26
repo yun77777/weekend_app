@@ -9,9 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.2",
     "express": "^4.17.3",
     "framework7": "^6.3.16",
     "framework7-icons": "^5.0.5",
-    "path": "^0.12.7"
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "jquery": "^3.6.0",
+    "path": "^0.12.7",
+    "querystring": "^0.2.1"
   }
 }
