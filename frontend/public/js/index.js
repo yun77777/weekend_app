@@ -21,9 +21,11 @@ $(document).on('click', '.login', function () {
 
 });
 
+
 $(document).on('click', '.join', function () {
-  fetch('http://localhost:5000/user/join', {
-    method: 'POST',
+  fetch('http://3.37.69.211:5000/user/login', {
+    // fetch('http://localhost:5000/user/login', {
+      method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },

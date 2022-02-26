@@ -13,6 +13,13 @@ router.post('/post', function (req, res, next) {
     res.send('post success')
 });
 
+router.post('/post/test', function (req, res, next) {
+    console.log('POST 호출 / data : ' + req.body.data);
+    console.log('path : ' + req.path);
+    res.send('post success')
+});
+
+
 router.put('/put/:id', function (req, res, next) {
     console.log('UPDATE 호출 / id : ' + req.params.id);
     console.log('body : ' + req.body.data);

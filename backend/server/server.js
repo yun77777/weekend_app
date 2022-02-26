@@ -8,6 +8,12 @@ app.use(cors());
 app.use(require("./routes/record"));
 // get driver connection
 const dbo = require("./db/conn");
+
+
+var retrofitRouter = require('./routes/retrofit');
+app.use('/retrofit', retrofitRouter);
+
+
  
 app.listen(port, () => {
   // perform a database connection when server starts
