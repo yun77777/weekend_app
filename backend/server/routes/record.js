@@ -13,9 +13,9 @@ recordRoutes.route("/user/join/").post(async function (req, res) {
   // const { email, name, password } = req.body;
   console.log('req.body@@@:', req.body.user);
 
-  const email = req.body.user.email;
-  const name = req.body.user.name;
-  const password = req.body.user.password;
+  const email = req.body.email;
+  const name = req.body.name;
+  const password = req.body.password;
 
   const user = await User.findOne({ email });
   console.log('email@@@:', email);
@@ -31,12 +31,16 @@ recordRoutes.route("/user/join/").post(async function (req, res) {
       });
 
       const savedUser = user.save();
-      if (savedUser)
+      if (savedUser) {
         console.log('saved');
+        return res.json({ error: false, msg: 'saved user' , status: 'login'});
+      }
     } catch (err) {
-      return res.json({ error: true, msg: 'failed to save user' });
+      return res.json({ error: true, msg: 'failed to save user', status: '' });
     }
 
+  } else {
+    return res.json({ error: false, msg: 'already saved user', staus:'signup'});
   }
 
 });
@@ -57,8 +61,8 @@ const generateRefreshToken = (email) => {
 
 recordRoutes.route("/user/login").post(async function (req, res) {
   // let { email, password } = req.body;
-  const email = req.body.user.email;
-  const password = req.body.user.password;
+  const email = req.body.email;
+  const password = req.body.password;
   
   console.log('email@: ', email);
   console.log('password@: ', password);
@@ -100,10 +104,13 @@ recordRoutes.route("/user/login").post(async function (req, res) {
 
     
     console.log('l@@@@@@ogged in successfully');
-    return res.json({ accessToken, refreshToken});
+    return res.json({ error: false, msg: 'logined successfully' , status: 'login', token:{accessToken:accessToken,refreshToken:refreshToken}, });
+
+    // return res.json({ accessToken, refreshToken});
 
   } else {
-    return res.json({ error: true, msg: 'check your account' });
+    
+    return res.json({ error: true, msg: 'check your account', status: ''});
   }
 });
 
