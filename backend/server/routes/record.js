@@ -16,18 +16,21 @@ recordRoutes.route("/user/join/").post(async function (req, res) {
   const email = req.body.email;
   const name = req.body.name;
   const password = req.body.password;
+  const deviceToken = req.body.device;
 
   const user = await User.findOne({ email });
   console.log('email@@@:', email);
   console.log('name@@@:', name);
   console.log('password@@@:', password);
+  console.log('deviceToken@@@:', deviceToken);
 
   if (!user) {
     try {
       let user = new User({
         email: email,
         name: name,
-        password: password
+        password: password,
+        deviceToken: deviceToken
       });
 
       const savedUser = user.save();
@@ -63,12 +66,17 @@ recordRoutes.route("/user/login").post(async function (req, res) {
   // let { email, password } = req.body;
   const email = req.body.email;
   const password = req.body.password;
+  const deviceToken = req.body.device;
   
   console.log('email@: ', email);
   console.log('password@: ', password);
+  console.log('deviceToken@: ', deviceToken);
 
   let user = await User.findOne({ email });
   console.log('user@: ', user);
+  if(!user)
+    return res.json({ error: true, msg: 'check your account', status: ''});
+
 
   let isMatch = await user.checkPassword(password);
 
@@ -77,36 +85,16 @@ recordRoutes.route("/user/login").post(async function (req, res) {
   if (isMatch) {
 
     let accessToken = generateAccessToken(email);
-    // jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7 days' });
     let refreshToken = generateRefreshToken(email);
-    // jwt.sign({ email: user.email }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '180 days' });
 
-    user.accessToken = accessToken;
-    user.refreshToken = refreshToken;
-    console.log('accessToken:', user.accessToken);
-
-    // try {
-    //     user.save(function (err, user) {
-    //     if (err) return res.json({ error: 'errrrrrror' })
-    //     res.cookie('x_auth', user.accessToken, {
-    //       maxAge: 1000 * 60 * 60 * 24 * 7,
-    //       httpOnly: true
-    //     }).json({ error: false, email: email });
-
-    //   });
-    // } catch (err) {
-    //   return res.json({ error: true, msg: 'error happened' });
-    // }
+    user.token = refreshToken;
 
     res.cookie('accessToken', accessToken, { maxAge: 1000 * 60 * 10, httpOnly: false });
-    // res.cookie('accessToken', accessToken);
     console.log(req.cookies.accessToken,' cookies');
 
     
     console.log('l@@@@@@ogged in successfully');
-    return res.json({ error: false, msg: 'logined successfully' , status: 'login', token:{accessToken:accessToken,refreshToken:refreshToken}, });
-
-    // return res.json({ accessToken, refreshToken});
+    return res.json({ error: false, msg: 'logined successfully' , status: 'login', token: refreshToken, });
 
   } else {
     
@@ -115,6 +103,37 @@ recordRoutes.route("/user/login").post(async function (req, res) {
 });
 
 
+
+recordRoutes.route("/user/logout").get(async function (req, res) {
+  const email = req.body.email;
+  
+  console.log('email@: ', email);
+
+  let user = await User.findOne({ email });
+  console.log('user@: ', user);
+  if(!user)
+    return res.json({ error: true, msg: 'check your account', status: ''});
+
+
+  let isMatch = await user.checkPassword(password);
+
+  console.log('isMatch: ', isMatch);
+
+  if (isMatch) {
+
+    let accessToken = generateAccessToken(email);
+    let refreshToken = generateRefreshToken(email);
+
+    user.token = "";
+
+    console.log('l@@@@@@ogged out successfully');
+    return res.json({ error: false, msg: 'logged out successfully' , status: 'logout', token: user.token, });
+
+  } else {
+    
+    return res.json({ error: true, msg: 'check your account', status: ''});
+  }
+});
 
 recordRoutes.route("/api/token").get(async function (req, res) {
   let { email, password } = req.body;
@@ -127,25 +146,6 @@ recordRoutes.route("/api/token").get(async function (req, res) {
 
 });
 
-// const authMiddleware = (req, res, next) => {
-//   let authHeader = req.headers["authorization"];
-//   let token = authHeader && authHeader.split(" ")[1];
-
-//   if(!token) {
-//     console.log('something went wrong on token');
-//     return res.sendStatus(400);
-//   }
-
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
-//     if(error) {
-//       console.log(error);
-//       return res.sendStatus(403);
-//     }
-
-//     req.user = user;
-//     next();
-//   });
-// };
 
 // regenerate access token based on refresh token
 recordRoutes.route("/refresh").post(async function (req, res) {
@@ -165,19 +165,8 @@ recordRoutes.route("/refresh").post(async function (req, res) {
   )
 });
 
-// recordRoutes.use("/api/mypage", authMiddleware);
 recordRoutes.route("/api/mypage").get(authMiddleware, (req, res, next) => {
-  // const users = await db.users.find({token:token});
-  
-
   res.json(db.users.filter((user) => user.email === req.user.email));
 });
-
-// http://localhost:5000/api/mypage
-// recordRoutes.route("/api/mypage").get(function (req, res) {
-//   // console.log('req.cookies.x_auth:',req.cookies);
-//   // const users = await db.users.find({token:token});
-
-// });
 
 module.exports = recordRoutes;

@@ -6,11 +6,10 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, unique: false, require: true, trim: true },
   password: { type: String, require: true },
   token: {type: String},
+  deviceToken: {type: String},
   imagePath: {type: String},
   imageName: {type: String},
-  token: {type: String},
-  accessToken: {type: String},
-  refreshToken: {type: String},
+  // refreshToken: {type: String},
 
 });
  
@@ -18,7 +17,7 @@ UserSchema.pre('save', function(next) {
   const user = this;
 
   console.log("user@:", user);
-  if(user.accessToken || user.token) return;
+  if(user.token) return;
 
   const saltFactor = 10;
 
