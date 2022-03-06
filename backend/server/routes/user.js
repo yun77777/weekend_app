@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
   email: { type: String, unique: true, require: true, trim: true },
   name: { type: String, unique: false, require: true, trim: true },
-  password: { type: String, require: true },
+  password: { type: String, unique: false, require: true, trim: true },
+  // password: { type: String, require: true },
   token: {type: String},
   deviceToken: {type: String},
   imagePath: {type: String},
@@ -37,7 +38,8 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.checkPassword = function(guess){
   console.log('p1:',guess);
   console.log('p2:',this.password);
-  return bcrypt.compare(guess,this.password);
+  
+  return bcrypt.compare(guess, this.password);
 };
 
 // UserSchema.methods.checkPassword = function(guess, done){

@@ -73,7 +73,7 @@ recordRoutes.route("/user/login").post(async function (req, res) {
   console.log('deviceToken@: ', deviceToken);
 
   let user = await User.findOne({ email });
-  console.log('user@: ', user);
+  console.log('user@@@: ', user);
   if(!user)
     return res.json({ error: true, msg: 'check your account', status: ''});
 
